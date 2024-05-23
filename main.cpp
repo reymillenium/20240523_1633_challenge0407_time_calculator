@@ -21,6 +21,7 @@
 #include <cstdlib> // For rand and srand
 #include <ctime>   // For the time function
 #include <sstream> // for stringstream
+#include <time.h>
 
 using namespace std;
 
@@ -121,10 +122,50 @@ double round_up(double const value, const int decimal_places) {
 // };
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    const auto seconds_amount = get_value<int>("Enter a number of seconds: ");
+    constexpr int SECONDS_PER_DAY = 86400;
+    constexpr int SECONDS_PER_HOUR = 3600;
+    constexpr int SECONDS_PER_MINUTE = 60;
 
-    print("Those " + to_string(seconds_amount) + " seconds are equivalent to ");
+    const auto input_in_seconds = get_value<int>("Enter a number of seconds: ");
+
+    // Not included in this tutorial content
+    // time_t seconds(seconds_amount); // you have to convert your seconds_amount (int) into a time_t object
+    // tm *p = gmtime(&seconds); // convert to broken down time
+    // cout << "days = " << p->tm_yday << endl;
+    // cout << "hours = " << p->tm_hour << endl;
+    // cout << "minutes = " << p->tm_min << endl;
+    // cout << "seconds = " << p->tm_sec << endl;
+
+
+    // short days_amount = floor(input_in_seconds / SECONDS_PER_DAY);
+
+    // Core calculations: We use the reminder to get the next lower time unit amount
+    // const int days_amount = input_in_seconds / SECONDS_PER_DAY;
+    // const int reminder_seconds_per_day = input_in_seconds % SECONDS_PER_DAY;
+    // const int hours_amount = reminder_seconds_per_day / SECONDS_PER_HOUR;
+    // const int reminder_seconds_per_hour = reminder_seconds_per_day % SECONDS_PER_HOUR;
+    // const int minutes_amount = reminder_seconds_per_hour / SECONDS_PER_MINUTE;
+    // const int seconds_amount = reminder_seconds_per_hour % SECONDS_PER_MINUTE;
+
+    // Core calculations Improved: Refactored
+    const int days_amount = input_in_seconds / SECONDS_PER_DAY;
+    const int hours_amount = (input_in_seconds % SECONDS_PER_DAY) / SECONDS_PER_HOUR;
+    const int minutes_amount = ((input_in_seconds % SECONDS_PER_DAY) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
+    const int seconds_amount = ((input_in_seconds % SECONDS_PER_DAY) % SECONDS_PER_HOUR) % SECONDS_PER_MINUTE;
+
+    // Now we pluralize & store into an array, if needed:
+
+
+
+
+    printl("Those " + to_string(input_in_seconds) + " seconds are equivalent to: ");
+    printl("Days: " + to_string(days_amount));
+    printl("Hours: " + to_string(hours_amount));
+    printl("Minutes: " + to_string(minutes_amount));
+    printl("Seconds: " + to_string(seconds_amount));
+
+
+
 
     return 0;
 }
