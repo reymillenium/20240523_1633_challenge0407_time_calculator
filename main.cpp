@@ -22,6 +22,7 @@
 #include <ctime>   // For the time function
 #include <sstream> // for stringstream
 #include <time.h>
+#include <algorithm> // for iterators
 
 using namespace std;
 
@@ -147,16 +148,21 @@ int main() {
     // const int minutes_amount = reminder_seconds_per_hour / SECONDS_PER_MINUTE;
     // const int seconds_amount = reminder_seconds_per_hour % SECONDS_PER_MINUTE;
 
-    // Core calculations Improved: Refactored
+    // Improved Main Core Calculations, after refactoring:
     const int days_amount = input_in_seconds / SECONDS_PER_DAY;
     const int hours_amount = (input_in_seconds % SECONDS_PER_DAY) / SECONDS_PER_HOUR;
     const int minutes_amount = ((input_in_seconds % SECONDS_PER_DAY) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
     const int seconds_amount = ((input_in_seconds % SECONDS_PER_DAY) % SECONDS_PER_HOUR) % SECONDS_PER_MINUTE;
 
     // Now we pluralize & store into an array, if needed:
+    int useful_strings_amount = 0;
+    useful_strings_amount += (days_amount > 0) ? 1 : 0;
+    useful_strings_amount += (hours_amount > 0) ? 1 : 0;
+    useful_strings_amount += (minutes_amount > 0) ? 1 : 0;
+    useful_strings_amount += (seconds_amount > 0) ? 1 : 0;
 
-
-
+    // array<std::string, static_cast<4>(useful_strings_amount)> tester;
+    std::vector<double> a(useful_strings_amount);
 
     printl("Those " + to_string(input_in_seconds) + " seconds are equivalent to: ");
     printl("Days: " + to_string(days_amount));
@@ -164,8 +170,63 @@ int main() {
     printl("Minutes: " + to_string(minutes_amount));
     printl("Seconds: " + to_string(seconds_amount));
 
+    // std::vector<int> values;
+    // values.push_back(days_amount);
+    // values.push_back(hours_amount);
+    // values.push_back(minutes_amount);
+    // values.push_back(seconds_amount);
+
+    std::vector<int> values {days_amount, hours_amount, minutes_amount, seconds_amount};
+    // Removes all the elements of the vector with the value 0.
+    values.erase(std::remove(values.begin(), values.end(), 0), values.end());
 
 
+    // for (const int &value: values) {
+    //     printl(value);
+    // }
+
+
+    std::vector<string> composed_values;
+    if (days_amount != 0)
+        composed_values.push_back(to_string(days_amount) + " day" + (days_amount == 1 ? "" : "s"));
+    if (hours_amount != 0)
+        composed_values.push_back(to_string(hours_amount) + " hour" + (hours_amount == 1 ? "" : "s"));
+    if (minutes_amount != 0)
+        composed_values.push_back(to_string(minutes_amount) + " minute" + (minutes_amount == 1 ? "" : "s"));
+    if (seconds_amount != 0)
+        composed_values.push_back(to_string(seconds_amount) + " second" + (seconds_amount == 1 ? "" : "s"));
+
+    printl(values.size());
+
+    for (const string &composed_value: composed_values) {
+        printl(composed_value);
+    }
+
+    string composed_answer;
+    for (int i = 0; i < composed_values.size(); i += 1) {
+        const string composed_value = composed_values[i];
+        if (composed_values.size() == 1) {
+            // Only 1 item
+            composed_answer += composed_value + ".";
+        } else {
+            // More than 1 item
+            if (i == 0) {
+                // First item of the vector
+                composed_answer += composed_value;
+            } else {
+                // not the first item of the vector
+                if (i == composed_values.size() - 1) {
+                    // The last item of the vector
+                    composed_answer += ", and " + composed_value + ".";
+                } else {
+                    // Not the last item, nor the first one (an item in between)
+                    composed_answer += ", " + composed_value;
+                }
+            }
+        }
+    }
+
+    printl(composed_answer);
 
     return 0;
 }
