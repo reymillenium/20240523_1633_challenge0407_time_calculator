@@ -38,10 +38,10 @@ And in order to run that a.out file, we must execute on the terminal:
 
 ```terminal
 reinier@reinier % ./your_prefered_executable_file_name
-Enter a number (1 - 10): 33
-You must type a number between 1 & 10. Try again please.
-Enter a number (1 - 10): 7
-The Roman Numeral version of 7 is VII.
+Enter a number of seconds: 0
+You must enter a number greater than zero. Try again please.
+Enter a number of seconds: 234523452345
+Those 234,523,452,345 seconds are equivalent to: 2,714,391 days, 19 hours, 25 minutes, and 45 seconds.
 
 Process finished with exit code 0
 reinier@reinier % 
