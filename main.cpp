@@ -12,7 +12,7 @@
  **/
 
 #include <iostream>
-#include <vector> // for vectors
+#include <vector>
 
 using namespace std;
 
